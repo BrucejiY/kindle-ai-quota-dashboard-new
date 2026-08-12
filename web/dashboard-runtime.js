@@ -313,9 +313,7 @@
     if (data.updatedAt !== state.renderedAt) {
       state.renderedAt = data.updatedAt;
       updateWeather(data.weather);
-      updateQuotaCard('cardClaude', data.sources.claude);
-      updateQuotaCard('cardCodex', data.sources.codex);
-      updateQuotaCard('cardKimi', data.sources.kimi);
+      updateQuotaCard('cardZhipu', data.sources.zhipu);
       updateBalance(data.sources.deepseek);
       updateQuote(data.quote);
       relativeNode = ui.find('relTime');

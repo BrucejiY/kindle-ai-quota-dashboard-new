@@ -4,6 +4,10 @@
   "quoteFile": "config/quote.json",
   "weatherFile": "",
   "providers": {
+    "zhipu": {
+      "enabled": false,
+      "apiKeyEnv": "ZHIPU_API_KEY"
+    },
     "deepseek": {
       "enabled": false,
       "apiKeyEnv": "DEEPSEEK_API_KEY"

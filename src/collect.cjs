@@ -6,6 +6,7 @@ const { collectClaude } = require('./collectors/claude.cjs');
 const { collectCodex } = require('./collectors/codex.cjs');
 const { collectDeepSeek } = require('./collectors/deepseek.cjs');
 const { collectKimi } = require('./collectors/kimi.cjs');
+const { collectZhipu } = require('./collectors/zhipu.cjs');
 const { ROOT, loadConfig } = require('./lib/config.cjs');
 const {
   isoBeijing,
@@ -14,7 +15,7 @@ const {
   writeAtomic,
 } = require('./lib/common.cjs');
 
-const SOURCE_NAMES = ['claude', 'codex', 'kimi', 'deepseek'];
+const SOURCE_NAMES = ['claude', 'codex', 'kimi', 'zhipu', 'deepseek'];
 
 function readQuote(filePath) {
   if (!filePath) return null;
@@ -133,6 +134,16 @@ function demoSnapshot() {
         fetchedAt: now,
         error: null,
       },
+      zhipu: {
+        ok: true,
+        label: '智谱',
+        windows: [
+          { name: '5小时', usedPct: 18, resetAt: afterHours(3) },
+          { name: '每周', usedPct: 35, resetAt: afterHours(96) },
+        ],
+        fetchedAt: now,
+        error: null,
+      },
       deepseek: {
         ok: true,
         label: 'DeepSeek',
@@ -148,17 +159,18 @@ function demoSnapshot() {
 
 async function realSnapshot(config) {
   const providers = config.providers || {};
-  const [claude, codex, kimi, deepseek] = await Promise.all([
+  const [claude, codex, kimi, zhipu, deepseek] = await Promise.all([
     collectClaude(providers.claude),
     collectCodex(providers.codex),
     collectKimi(providers.kimi),
+    collectZhipu(providers.zhipu),
     collectDeepSeek(providers.deepseek),
   ]);
   return {
     updatedAt: isoBeijing(),
     weather: readWeather(config.weatherFile),
     quote: readQuote(config.quoteFile),
-    sources: { claude, codex, kimi, deepseek },
+    sources: { claude, codex, kimi, zhipu, deepseek },
   };
 }
 
